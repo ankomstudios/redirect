@@ -3,25 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>wannasmile | official links</title>
+<title>WannaSmile Official Links Board</title>
 <meta name="description" content="The live board of official wannasmile links, loaded straight from our sheet.">
 <meta name="theme-color" content="#111111">
-<meta property="og:title" content="wannasmile · official links">
+<meta property="og:title" content="WannaSmile Official Links Board">
 <meta property="og:description" content="Always up to date. Always checked. Find the real wannasmile here.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
-body{background:#d3d3d3;color:#161616;font:13px/1.5 "Courier New",Consolas,monospace;padding-bottom:56px}
-.bar{background:#111;color:#fff;font-weight:700;padding:0 16px;height:52px;display:flex;align-items:center;gap:22px;font-size:12px}
-.bar b{font-size:13px;letter-spacing:.02em}
-.bar span{color:#aaa;font-weight:400}
+body{background:#d3d3d3 url("https://raw.githubusercontent.com/wannasmile4evr/mediabaseWS/main/themes/redux/headerBg.png") repeat;color:#161616;font:13px/1.5 "Courier New",Consolas,monospace;padding-bottom:28px}
 main{max-width:760px;margin:0 auto;padding:22px 14px}
-.tag{margin:0 0 16px;color:#444}
+.hero{width:fit-content;max-width:100%;margin:6px auto 22px;padding:16px 26px;background:rgba(17,17,17,.9);color:#fff;border-radius:12px;text-align:center}
+.hero h1{margin:0;font-size:clamp(20px,4.6vw,30px);line-height:1.2}
+.tag{margin:6px 0 0;color:#ccc;font-size:12px}
+.live{margin-top:6px;font-size:11px;color:#9a9a9a}
+.dc{position:absolute;top:14px;right:16px;width:44px;height:44px;display:grid;place-items:center;background:#111;color:#fff;font-size:24px;text-decoration:none}
+.dc:hover{background:#5865f2}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
-.chip{cursor:pointer;border:1px solid #222;background:transparent;color:#222;padding:3px 10px;font:inherit;font-size:12px}
+.chip{cursor:pointer;border:1px solid #222;background:#ececec;color:#222;padding:3px 10px;font:inherit;font-size:12px}
 .chip:hover{background:#e6e6e6}
 .chip[aria-pressed=true]{background:#111;color:#fff}
-.notice{margin:0 0 16px;padding:8px 12px;border:1px dashed #8a6200;color:#6b4c00;font-size:12px}
+.notice{margin:0 0 16px;padding:8px 12px;background:#ececec;border:1px dashed #8a6200;color:#6b4c00;font-size:12px}
 .b{font-size:11px;padding:0 6px;border:1px solid #777;color:#444}
 .b.works{color:#137a3d;border-color:#137a3d}.b.blocked{color:#b3261e;border-color:#b3261e}.b.unknown{color:#8a6200;border-color:#8a6200}
 .b.off,.b.here{background:#111;color:#fff;border-color:#111}
@@ -50,19 +53,21 @@ main{max-width:760px;margin:0 auto;padding:22px 14px}
 .cp:hover{background:#e0e0e0}
 @media(max-width:560px){.body{flex-direction:column}.badges{justify-content:flex-start;max-width:none}}
 .empty{grid-column:1/-1;color:#555;padding:30px 0}
-.foot{position:fixed;left:0;right:0;bottom:0;background:#555;color:#fff;font-size:12px;font-weight:700;text-align:center;padding:14px 10px}
 a:focus-visible,button:focus-visible{outline:2px solid #111;outline-offset:2px}
 </style>
 </head>
 <body>
-<div class="bar"><b>Home</b><span>official links</span></div>
+<a class="dc" href="https://discord.gg/UKbQ2s8pJA" target="_blank" rel="noopener noreferrer" title="join our server!" aria-label="join our server!"><i class="fa-brands fa-discord" aria-hidden="true"></i></a>
 <main>
-  <p class="tag">Official wannasmile links, checked and updated live. Only trust what is listed here.</p>
+  <div class="hero">
+    <h1>WannaSmile Official Links Board</h1>
+    <p class="tag">Checked and updated live. Only trust what is listed here.</p>
+    <div class="live" id="live"><span id="liveTxt">connecting...</span></div>
+  </div>
   <div class="chips" id="chips" hidden></div>
   <div class="notice" id="notice" hidden></div>
   <section class="grid" id="grid" aria-live="polite"></section>
 </main>
-<div class="foot"><span id="live"><span id="liveTxt">connecting...</span></span> &nbsp;·&nbsp; wannasmile4evr</div>
 <script>
 // Paste your deployed /exec url here (data.gs web app).
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbyFsLxR-ZqoFLw402Thh_Qnpec7CJLo1GVDYJeakYIGA7_gZnaMqYRCQ3Txwlgm_sSq/exec";
