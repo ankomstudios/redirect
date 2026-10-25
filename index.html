@@ -1,8 +1,182 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>wannasmile · official links</title>
+<meta name="description" content="The live board of official wannasmile links, loaded straight from our sheet.">
+<meta name="theme-color" content="#111111">
+<meta property="og:title" content="wannasmile · official links">
+<meta property="og:description" content="Always up to date. Always checked. Find the real wannasmile here.">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:#d3d3d3;color:#161616;font:13px/1.5 "Courier New",Consolas,monospace;padding-bottom:56px}
+.bar{background:#111;color:#fff;font-weight:700;padding:0 16px;height:52px;display:flex;align-items:center;gap:22px;font-size:12px}
+.bar b{font-size:13px;letter-spacing:.02em}
+.bar span{color:#aaa;font-weight:400}
+main{max-width:1000px;margin:0 auto;padding:22px 14px}
+.tag{margin:0 0 16px;color:#444}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
+.chip{cursor:pointer;border:1px solid #222;background:transparent;color:#222;padding:3px 10px;font:inherit;font-size:12px}
+.chip:hover{background:#e6e6e6}
+.chip[aria-pressed=true]{background:#111;color:#fff}
+.notice{margin:0 0 16px;padding:8px 12px;border:1px dashed #8a6200;color:#6b4c00;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:12px}
+.card{display:flex;flex-direction:column;gap:9px;padding:14px;background:#ececec;border:1px solid #8c8c8c}
+.card:hover{border-color:#111}
+.card.official{border:2px solid #111}
+.top{display:flex;gap:10px;align-items:center}
+.av{flex:none;width:38px;height:38px;object-fit:cover;background:#111;color:#fff;display:grid;place-items:center;font-weight:700;font-size:16px}
+.name{font-weight:700;font-size:15px;line-height:1.2;overflow-wrap:anywhere}
+.by{font-size:12px;color:#555}
+.badges{display:flex;flex-wrap:wrap;gap:5px}
+.b{font-size:11px;padding:0 6px;border:1px solid #777;color:#444}
+.b.works{color:#137a3d;border-color:#137a3d}.b.blocked{color:#b3261e;border-color:#b3261e}.b.unknown{color:#8a6200;border-color:#8a6200}
+.b.off,.b.here{background:#111;color:#fff;border-color:#111}
+.b.ad{color:#8a6200;border-color:#8a6200}
+.info{margin:0;padding:0;list-style:none;font-size:12.5px}
+.info li.bul::before{content:"- "}
+.warn{font-size:11.5px;color:#555;margin:0}
+.trailer{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid #777;background:#000;cursor:pointer;padding:0;width:100%}
+.trailer img,.trailer iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+.trailer span{position:absolute;inset:0;display:grid;place-items:center;font-size:30px;color:#fff;text-shadow:0 1px 8px #000}
+.acts{display:flex;gap:6px;margin-top:auto}
+.go{flex:1;text-align:center;text-decoration:none;color:#fff;background:#111;font-weight:700;padding:7px 10px}
+.go:hover{background:#333}
+.cp{cursor:pointer;border:1px solid #111;background:transparent;color:#111;padding:0 12px;font:inherit}
+.cp:hover{background:#e0e0e0}
+.empty{grid-column:1/-1;color:#555;padding:30px 0}
+.foot{position:fixed;left:0;right:0;bottom:0;background:#555;color:#fff;font-size:12px;font-weight:700;text-align:center;padding:14px 10px}
+a:focus-visible,button:focus-visible{outline:2px solid #111;outline-offset:2px}
+</style>
+</head>
 <body>
+<div class="bar"><b>Home</b><span>official links</span></div>
+<main>
+  <p class="tag">Official wannasmile links, checked and updated live. Only trust what is listed here.</p>
+  <div class="chips" id="chips" hidden></div>
+  <div class="notice" id="notice" hidden></div>
+  <section class="grid" id="grid" aria-live="polite"></section>
+</main>
+<div class="foot"><span id="live"><span id="liveTxt">connecting...</span></span> &nbsp;·&nbsp; wannasmile4evr</div>
 <script>
-window.location.href = "https://wannasmile4evr.github.io./";
+// Paste your deployed /exec url here (data.gs web app).
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbyFsLxR-ZqoFLw402Thh_Qnpec7CJLo1GVDYJeakYIGA7_gZnaMqYRCQ3Txwlgm_sSq/exec";
+
+const REFRESH_MS = 60000, CACHE_KEY = "wsboard:v1";
+// Card looks. Unknown styles fall back to "default". Add new ones here and in CSS (.card.s-<name>).
+const STYLES = ["default"];
+
+const DEMO = {ok:true,canonicalOwner:"ankomstudios",updated:new Date().toISOString(),items:[
+  {name:"More Hallows",version:"2.3.0",trailer:"vonRpwOq4zg",info:"new update! finally XD\n- 10 pages\n- RAW CDN NETWORK\n- Proxy Based .io hotlinks\n- Very easy to modify & Contribute too ^^",devBy:"THAWDABASE",devImg:"",sourceTruth:"ankomstudios",url:"https://vvannazmile.github.io./",status:"works",type:"ws",style:"default",official:true},
+  {name:"Unofficial example",version:"1.0.0",trailer:"",info:"your unofficial info here for a fork of wannasmile :p",devBy:"someone",devImg:"",sourceTruth:"someone",url:"https://example.com/",status:"unknown",type:"fork",style:"default",official:false}]};
+
+const $ = id => document.getElementById(id);
+const TYPE_LABEL = {ws:"wannasmile",fork:"fork",external:"external",ad:"ad"};
+let data = null, filter = "all", lastGood = 0;
+
+function el(tag, cls, text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function safeUrl(u){try{const x=new URL(String(u).trim());return /^https?:$/.test(x.protocol)?x.href:""}catch(e){return ""}}
+function ago(iso){const s=(Date.now()-Date.parse(iso))/1000;if(!isFinite(s)||s<0)return "just now";if(s<90)return "just now";if(s<3600)return Math.round(s/60)+" min ago";return Math.round(s/3600)+" h ago"}
+function setLive(state, txt){$("live").className="live "+state;$("liveTxt").textContent=txt}
+
+function hostOf(u){try{return new URL(u).host.replace(/\.$/,"")}catch(e){return ""}}
+
+function card(it, i){
+  const style = STYLES.includes(it.style) ? it.style : "default";
+  const href = safeUrl(it.url);
+  const c = el("article","card s-"+style+(it.official?" official":""));
+  c.style.animationDelay = Math.min(i*60,600)+"ms";
+
+  const top = el("div","top");
+  const imgUrl = safeUrl(it.devImg);
+  if(imgUrl){
+    const im = el("img","av"); im.src=imgUrl; im.alt=""; im.loading="lazy"; im.referrerPolicy="no-referrer";
+    im.onerror=()=>{const f=el("div","av",(it.devBy||it.name||"?").charAt(0).toUpperCase());im.replaceWith(f)};
+    top.append(im);
+  } else top.append(el("div","av",(it.devBy||it.name||"?").charAt(0).toUpperCase()));
+  const t = el("div"); t.append(el("div","name",it.name||"untitled"));
+  if(it.devBy) t.append(el("div","by","by "+it.devBy));
+  top.append(t); c.append(top);
+
+  const bd = el("div","badges");
+  if(it.version) bd.append(el("span","b ver","v"+it.version));
+  bd.append(el("span","b "+it.status,"● "+it.status));
+  if(it.official) bd.append(el("span","b off","✓ official"));
+  else bd.append(el("span","b"+(it.type==="ad"?" ad":""),TYPE_LABEL[it.type]||it.type));
+  if(href && hostOf(href)===location.host.replace(/\.$/,"")) bd.append(el("span","b here","you're here"));
+  c.append(bd);
+
+  const lines = String(it.info||"").split("\n").map(s=>s.trim()).filter(Boolean);
+  if(lines.length){
+    const ul = el("ul","info");
+    lines.forEach(l=>{const bul=/^[-•*]\s*/.test(l);ul.append(el("li",bul?"bul":"",l.replace(/^[-•*]\s*/,"")))});
+    c.append(ul);
+  }
+  if(it.trailer){
+    const tb = el("button","trailer"); tb.type="button"; tb.setAttribute("aria-label","Play trailer");
+    const th = el("img"); th.src="https://i.ytimg.com/vi/"+it.trailer+"/hqdefault.jpg"; th.alt=""; th.loading="lazy"; th.referrerPolicy="no-referrer";
+    tb.append(th, el("span","","▶"));
+    tb.onclick=()=>{const f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+it.trailer+"?autoplay=1&rel=0";f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;f.title="Trailer";tb.replaceChildren(f)};
+    c.append(tb);
+  }
+  if(it.type!=="ws") c.append(el("p","warn",it.type==="ad"?"Advertisement. Not made or run by us.":"Not run by us. Open at your own risk."));
+  if(it.official && it.sourceTruth) c.append(el("p","warn","Source of truth: "+it.sourceTruth));
+
+  const acts = el("div","acts");
+  if(href){
+    const a = el("a","go","Open ↗"); a.href=href; a.target="_blank"; a.rel="noopener noreferrer";
+    const cp = el("button","cp","⧉"); cp.type="button"; cp.title="Copy link"; cp.setAttribute("aria-label","Copy link");
+    cp.onclick=()=>{(navigator.clipboard?navigator.clipboard.writeText(href):Promise.reject()).then(()=>{cp.textContent="✓";setTimeout(()=>cp.textContent="⧉",1200)}).catch(()=>prompt("Copy this link:",href))};
+    acts.append(a,cp);
+  }
+  c.append(acts);
+  return c;
+}
+
+function render(){
+  const items = (data&&data.items)||[];
+  const types = [...new Set(items.map(i=>i.type))];
+  const chips = $("chips"); chips.replaceChildren();
+  if(types.length>1){
+    chips.hidden=false;
+    ["all",...types].forEach(t=>{
+      const b=el("button","chip",t==="all"?"all":(TYPE_LABEL[t]||t)); b.type="button"; b.setAttribute("aria-pressed",String(filter===t));
+      b.onclick=()=>{filter=t;render()}; chips.append(b);
+    });
+  } else {chips.hidden=true;filter="all"}
+  const grid = $("grid"); grid.replaceChildren();
+  const shown = items.filter(i=>filter==="all"||i.type===filter);
+  if(!shown.length) grid.append(el("div","empty","Nothing here yet. Check back soon ✨"));
+  shown.forEach((it,i)=>grid.append(card(it,i)));
+}
+
+function notice(msg){const n=$("notice");n.hidden=!msg;n.textContent=msg||""}
+
+function accept(d, fromCache){
+  if(!d||!Array.isArray(d.items)) throw new Error("bad feed");
+  data=d; lastGood=Date.parse(d.updated)||Date.now(); render();
+  if(!fromCache) try{localStorage.setItem(CACHE_KEY,JSON.stringify(d))}catch(e){}
+}
+
+async function load(){
+  if(SHEET_URL==="SHEET_URL"||!SHEET_URL){accept(DEMO,true);setLive("off","demo mode");notice("Preview only: set SHEET_URL in this file to your deployed data.gs /exec link to go live.");return}
+  const ctl=new AbortController(), to=setTimeout(()=>ctl.abort(),12000);
+  try{
+    const r=await fetch(SHEET_URL+(SHEET_URL.includes("?")?"&":"?")+"type=board",{signal:ctl.signal});
+    const d=await r.json(); if(d.error&&!d.items) throw new Error(d.error);
+    accept(d,false); notice(""); setLive("on","live, updated "+ago(d.updated));
+  }catch(e){
+    if(!data){try{const c=JSON.parse(localStorage.getItem(CACHE_KEY));if(c)accept(c,true)}catch(x){}}
+    if(data){setLive("off","offline · showing saved board ("+ago(new Date(lastGood).toISOString())+")");notice("Couldn't reach the live board. These links may be out of date.")}
+    else{setLive("off","offline");notice("Couldn't reach the live board. Try again in a moment.");$("grid").replaceChildren(el("div","empty","No links loaded."))}
+  }finally{clearTimeout(to)}
+}
+
+load();
+setInterval(load,REFRESH_MS);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-lastGood>30000)load()});
 </script>
 </body>
 </html>
